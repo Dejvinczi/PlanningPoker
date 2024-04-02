@@ -9,12 +9,16 @@ import { getWsRoomUrl } from '@/api/ws';
 
 const Game = ({ isAdmin, roomId, voterId }) => {
   const [voteChoices, setVoteChoices] = useState([]);
-  const [selectedValue, setSelectedValue] = useState(undefined);
+  const [selectedValue, setSelectedValue] = useState(null);
   const [endGame, setEndGame] = useState(false);
   const [votes, setVotes] = useState([]);
-  const router = useRouter(null);
+  const router = useRouter();
   const toast = useRef(null);
   const ws = useRef(null);
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   useEffect(() => {
     ws.current = new WebSocket(getWsRoomUrl(roomId));
@@ -32,8 +36,11 @@ const Game = ({ isAdmin, roomId, voterId }) => {
       }
 
       switch (data.action) {
-        case 'refresh_vote_choices':
+        case 'get_vote_choices':
           setVoteChoices(data.vote_choices);
+          break;
+        case 'message':
+          showToast(data.code, capitalizeFirstLetter(data.code), data.message);
           break;
         case 'refresh_votes':
           setVotes(data.votes);
@@ -42,6 +49,7 @@ const Game = ({ isAdmin, roomId, voterId }) => {
           showToast('success', 'Reveal votes', data.message);
           setVotes(data.votes);
           setEndGame(true);
+          break;
         case 'reset_votes':
           showToast('success', 'Reset votes', data.message);
           setVotes(data.votes);
@@ -77,7 +85,6 @@ const Game = ({ isAdmin, roomId, voterId }) => {
     };
 
     ws.current.send(JSON.stringify(voteData));
-    showToast('success', 'Vote', `You have successfully voted.`);
   };
 
   const revealVotes = () => {
@@ -108,13 +115,20 @@ const Game = ({ isAdmin, roomId, voterId }) => {
           <div>
             <Button
               label='Reveal'
-              disabled={!votes.every((vote) => vote.voted)}
+              disabled={
+                !votes.length ||
+                !votes.every((vote) => vote.voted === true) ||
+                endGame
+              }
               onClick={() => revealVotes()}
             />
-            <Button label='Reset' onClick={() => resetVotes()} />
+            <Button
+              label='Reset'
+              disabled={!endGame}
+              onClick={() => resetVotes()}
+            />
           </div>
         ) : (
-          !endGame &&
           voteChoices.map((choice) => (
             <Button
               className={
@@ -122,6 +136,7 @@ const Game = ({ isAdmin, roomId, voterId }) => {
               }
               key={choice.value}
               label={choice.label}
+              disabled={endGame}
               onClick={() => vote(choice.value)}
             />
           ))
@@ -133,14 +148,14 @@ const Game = ({ isAdmin, roomId, voterId }) => {
         <DataTable value={votes} tableStyle={{ minWidth: '50rem' }}>
           <Column field='voter' header='Voter'></Column>
           <Column
-            field='value'
-            header='Value'
-            body={(rowData) => (rowData.value ? rowData.value : 'Hidden')}
-          />
-          <Column
             field='voted'
             header='Voted'
             body={(rowData) => (rowData.voted ? 'Yes' : 'No')}
+          />
+          <Column
+            field='value'
+            header='Value'
+            body={(rowData) => (rowData.value ? rowData.value : 'Hidden')}
           />
         </DataTable>
       </div>

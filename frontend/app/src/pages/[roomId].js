@@ -34,7 +34,6 @@ const GamePage = () => {
           roomId={router.query.roomId}
           isAdmin={isAdmin}
           voterId={voterId}
-          toastRef={toast}
         />
       )}
     </div>

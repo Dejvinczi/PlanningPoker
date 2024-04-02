@@ -22,7 +22,7 @@ class CreateRoomSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True, "max_length": 30}}
 
     def create(self, validated_data):
-        """Return instance od Room model."""
+        """Return instance of Room model."""
         return Room.objects.create_room(**validated_data)
 
 

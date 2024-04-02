@@ -8,5 +8,5 @@ from core.consumers import (
 )
 
 websocket_urlpatterns = [
-    path("ws/room/<str:room_id>/", PlanningPokerConsumer.as_asgi()),
+    path("ws/room/<str:room_id>", PlanningPokerConsumer.as_asgi()),
 ]
