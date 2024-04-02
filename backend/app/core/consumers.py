@@ -4,6 +4,7 @@ Core consumers.
 
 import json
 from django.db.models import Case, When, Value, BooleanField
+from django.core.exceptions import ValidationError
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 
@@ -17,7 +18,7 @@ class PlanningPokerConsumer(AsyncWebsocketConsumer):
     def check_room_existing(self):
         try:
             return Room.objects.filter(id=self.room_id).exists()
-        except:
+        except (Room.DoesNotExist, ValidationError):
             return False
 
     @database_sync_to_async
