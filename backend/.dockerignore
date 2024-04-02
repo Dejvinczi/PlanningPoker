@@ -1,0 +1,22 @@
+# Ignore git files
+.gitignore
+
+# Ingore Docker files
+Dockerfile
+.dockerignore
+
+# Ingore Python files
+app/**/__pycache__/
+app/**/*.pyc
+app/**/*.pyo
+app/**/*.pyd
+app/**/*.pyz
+app/**/*.pyzw
+app/**/*.pycachefile
+.env
+.venv
+venv/
+
+# Ignore IDE specific files
+.vscode/
+.idea/
