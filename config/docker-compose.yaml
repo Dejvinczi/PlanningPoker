@@ -1,0 +1,64 @@
+version: "3.9"
+name: planningpoker
+
+# Project services composition
+services:
+
+  # Database composition
+  database:
+    build:
+      context: ../database
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+
+  # Redis composition
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+
+  # Backend composition
+  backend:
+    build:
+      context: ../backend
+      args:
+        - DEV=true
+    volumes:
+      - ../backend/app:/app
+    ports:
+      - 8000:8000
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=database
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DEBUG=1
+    depends_on:
+      - redis
+      - database
+
+  # Frontend composition
+  frontend:
+    build:
+      context: ../frontend
+    volumes:
+      - '../frontend/app:/app'
+      - '../frontend/node_modules'
+    ports:
+      - 3000:3000
+    command: >
+      sh -c "npm start"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+# Composition volumes
+volumes:
+  db-data:
