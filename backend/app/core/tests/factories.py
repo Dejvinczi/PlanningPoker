@@ -17,7 +17,6 @@ class RoomFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Room
-        skip_postgeneration_save = True
 
 
 class VoteFactory(factory.django.DjangoModelFactory):
