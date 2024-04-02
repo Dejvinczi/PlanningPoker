@@ -32,15 +32,17 @@ ALLOWED_HOSTS.extend(filter(None, os.environ.get("ALLOWED_HOSTS", "").split(",")
 # Application definition
 
 INSTALLED_APPS = [
+    "channels",
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "core",
     "corsheaders",
     "rest_framework",
-    "core",
 ]
 
 
@@ -73,6 +75,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "app.asgi.application"
 WSGI_APPLICATION = "app.wsgi.application"
 
 
@@ -136,3 +139,13 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 APPEND_SLASH = False
+
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}

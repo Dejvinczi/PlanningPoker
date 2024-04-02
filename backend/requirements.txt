@@ -4,3 +4,6 @@ psycopg2>=2.9.9,<2.10
 pytest_django>=4.8.0,<4.9
 factory_boy>=3.3.0,<3.4
 django_cors_headers>=4.3.1,<4.4
+channels>=4.0.0,<4.1
+daphne>=4.1.0,<4.2
+channels_redis>=4.2.0,<4.3
