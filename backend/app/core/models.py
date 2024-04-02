@@ -52,5 +52,5 @@ class Vote(models.Model):
     )
 
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="votes")
-    owner = models.CharField(max_length=20)
+    voter = models.CharField(max_length=20)
     value = models.IntegerField(choices=VALUE_CHOICES, null=True, blank=True)
