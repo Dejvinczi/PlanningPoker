@@ -4,7 +4,11 @@ Core models tests.
 
 import pytest
 
-from core.models import Room
+from core.models import (
+    Room,
+    Vote,
+)
+from core.tests.factories import RoomFactory
 
 
 @pytest.mark.django_db
@@ -25,3 +29,19 @@ class TestRoom:
 
         assert Room.objects.all().count() == 1
         assert room.check_password(password)
+
+
+@pytest.mark.django_db
+class TestVote:
+    """Vote model tests."""
+
+    def test_create_vote(self):
+        """Test creating vote."""
+        room = RoomFactory.create()
+        owner = 'SampleOwner'
+        vote = Vote.objects.create(room=room, owner=owner)
+
+        assert Vote.objects.all().count == 1
+        assert vote.owner == owner
+        assert vote.room.id == room.id
+        assert vote.value == None
