@@ -8,7 +8,7 @@ from core.models import Room
 
 
 class CreateRoomSerializer(serializers.ModelSerializer):
-    """Room model serializer."""
+    """Creation room model serializer."""
 
     password = serializers.CharField(max_length=30, write_only=True, required=False)
 

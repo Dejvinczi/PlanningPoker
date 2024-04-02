@@ -47,7 +47,7 @@ class TestVote:
         assert Vote.objects.all().count() == 1
         assert vote.owner == owner
         assert vote.room.id == room.id
-        assert vote.value == None
+        assert vote.value is None
 
     def test_update_vote(self):
         """Test update vote."""
