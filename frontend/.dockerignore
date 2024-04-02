@@ -1,27 +1,9 @@
-# Ignore git files
+# Ignore git and docker
+.dockerignore
 .gitignore
 
-# Ingore Docker files
-Dockerfile
-.dockerignore
-
-# Ignore node_modules directory
+# Ignore React (Next.js) some files and directories
 app/node_modules
-
-# Ignore development files
-app/.DS_Store
-app/.env.local
-app/.env.development.local
-app/.env.test.local
-app/.env.production.local
-
-# Ignore npm logs and caches
-app/npm-debug.log*
-app/yarn-debug.log*
-app/yarn-error.log*
-
-# Ignore IDE specific files
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
+app/.next
+app/out
+app/public
