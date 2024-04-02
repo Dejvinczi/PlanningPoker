@@ -11,11 +11,12 @@ ARG DEV=false
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 
-# Copy source directory with application into container directory
-COPY ./app /app
-
 # Set container workdir directory
 WORKDIR /app
+
+# Copy source directory with application into container directory
+COPY ./app .
+
 
 # Create virtual environment into workdir
 RUN python -m venv /py && \
