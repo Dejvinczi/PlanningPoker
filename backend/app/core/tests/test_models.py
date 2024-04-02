@@ -41,11 +41,11 @@ class TestVote:
     def test_create_vote(self):
         """Test creating vote."""
         room = RoomFactory.create()
-        owner = "SampleOwner"
-        vote = Vote.objects.create(room=room, owner=owner)
+        voter = "SampleOwner"
+        vote = Vote.objects.create(room=room, voter=voter)
 
         assert Vote.objects.all().count() == 1
-        assert vote.owner == owner
+        assert vote.voter == voter
         assert vote.room.id == room.id
         assert vote.value is None
 

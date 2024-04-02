@@ -24,7 +24,7 @@ class VoteFactory(factory.django.DjangoModelFactory):
     """Vote factory."""
 
     room = factory.SubFactory(RoomFactory)
-    owner = factory.Sequence(lambda n: f"SampleOwner{n}")
+    voter = factory.Sequence(lambda n: f"SampleVoter{n}")
 
     class Meta:
         model = Vote
