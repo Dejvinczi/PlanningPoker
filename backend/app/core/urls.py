@@ -3,9 +3,10 @@ Core urls.
 """
 
 from django.urls import path
-from .api import views
 
+from core.api import views
 
 urlpatterns = [
-    path("", views.CreateRoomAPIView.as_view(), name="create-room"),
+    path("create-room", views.CreateRoomAPIView.as_view(), name="create-room"),
+    path("join-room", views.JoinRoomAPIView.as_view(), name="join-room"),
 ]
