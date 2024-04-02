@@ -5,18 +5,23 @@
 Dockerfile
 .dockerignore
 
-# Ingore Python files
-app/**/__pycache__/
-app/**/*.pyc
-app/**/*.pyo
-app/**/*.pyd
-app/**/*.pyz
-app/**/*.pyzw
-app/**/*.pycachefile
-.env
-.venv
-venv/
+# Ignore node_modules directory
+app/node_modules
+
+# Ignore development files
+app/.DS_Store
+app/.env.local
+app/.env.development.local
+app/.env.test.local
+app/.env.production.local
+
+# Ignore npm logs and caches
+app/npm-debug.log*
+app/yarn-debug.log*
+app/yarn-error.log*
 
 # Ignore IDE specific files
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
