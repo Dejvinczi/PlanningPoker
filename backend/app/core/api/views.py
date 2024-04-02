@@ -2,14 +2,12 @@
 Core views.
 """
 
-from rest_framework import (
-    generics,
-)
+from rest_framework import generics
 
-from .. import models
-from . import serializers
+from core.models import Room
+from core.api.serializers import CreateRoomSerializer
 
 
 class CreateRoomAPIView(generics.CreateAPIView):
-    queryset = models.Room.objects.all()
-    serializer_class = serializers.CreateRoomSerializer
+    queryset = Room.objects.all()
+    serializer_class = CreateRoomSerializer

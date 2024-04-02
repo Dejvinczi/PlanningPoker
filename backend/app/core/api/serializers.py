@@ -1,8 +1,10 @@
-"""Core serializers."""
+"""
+Core serializers.
+"""
 
 from rest_framework import serializers
 
-from .. import models
+from core.models import Room
 
 
 class CreateRoomSerializer(serializers.ModelSerializer):
@@ -11,10 +13,11 @@ class CreateRoomSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=30, write_only=True, required=False)
 
     def create(self, validated_data):
-        return models.Room.objects.create_room(**validated_data)
+        """Return instance od Room model."""
+        return Room.objects.create_room(**validated_data)
 
     class Meta:
-        model = models.Room
+        model = Room
         fields = [
             "id",
             "password",
