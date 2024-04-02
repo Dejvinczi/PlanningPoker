@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import CreateRoom from '@/components/CreateRoom';
 import JoinRoom from '@/components/JoinRoom';
 
-const Home = () => {
+const HomePage = () => {
   const [createDialog, setCreateDialog] = useState(false);
   const [joinDialog, setJoinDialog] = useState(false);
 
@@ -32,4 +32,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
