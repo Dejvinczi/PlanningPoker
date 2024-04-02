@@ -3,6 +3,7 @@ Core models.
 """
 
 import uuid
+
 from django.contrib.auth.hashers import PBKDF2PasswordHasher
 from django.db import models
 
@@ -34,3 +35,22 @@ class Room(models.Model):
     def check_password(self, raw_password):
         """Return a boolean of whether the raw_password was correct."""
         return PBKDF2PasswordHasher().verify(raw_password, self.password)
+
+
+class Vote(models.Model):
+    """Vote model."""
+
+    VALUE_CHOICES = (
+        (1, "1"),
+        (2, "2"),
+        (3, "3"),
+        (5, "5"),
+        (8, "8"),
+        (13, "13"),
+        (20, "20"),
+        (40, "40"),
+    )
+
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="votes")
+    owner = models.CharField(max_length=20)
+    value = models.IntegerField(choices=VALUE_CHOICES, null=True, blank=True)
