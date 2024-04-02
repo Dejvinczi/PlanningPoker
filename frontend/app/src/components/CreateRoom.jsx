@@ -4,7 +4,7 @@ import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import api from '@/api/root';
+import api from '@//api/root';
 
 const CreateRoom = ({ visible, onHide }) => {
   const router = useRouter();
@@ -27,7 +27,14 @@ const CreateRoom = ({ visible, onHide }) => {
       const response = await api.post('create-room', { password });
       showToast('success', 'Created the room', `Room: ${response.data.id}`);
       hideDialog();
-      router.push(`/${response.data.id}`);
+      localStorage.setItem(
+        response.data.id,
+        JSON.stringify({ isAdmin: true, voterId: null }),
+      );
+      router.push({
+        pathname: '/[roomId]',
+        query: { roomId: response.data.id },
+      });
     } catch (error) {
       if (error.response) {
         if (error.response.status === 400) setErrors(error.response.data);

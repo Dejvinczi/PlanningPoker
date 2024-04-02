@@ -1,18 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import api from '@/api/root';
+import api from '@//api/root';
 
 const JoinRoom = ({ visible, onHide }) => {
   const router = useRouter();
-  const [roomId, setRoomId] = useState('');
+  const [roomId, setRoomId] = useState(null);
   const [password, setPassword] = useState('');
   const [voter, setVoter] = useState('');
   const [errors, setErrors] = useState({});
   const toast = useRef(null);
+
+  useEffect(() => {
+    setRoomId(router.query.roomId);
+  }, [router.query.roomId]);
 
   const showToast = (type, title, detail) => {
     toast.current.show({
@@ -33,7 +37,11 @@ const JoinRoom = ({ visible, onHide }) => {
       });
       showToast('success', 'Joined the room', `Voter ID: ${response.data.id}`);
       hideDialog();
-      router.push(`/${roomId}`);
+      localStorage.setItem(
+        roomId,
+        JSON.stringify({ isAdmin: false, voterId: response.data.id }),
+      );
+      router.push({ pathname: '/[roomId]', query: { roomId: roomId } });
     } catch (error) {
       if (error.response) {
         if (error.response.status === 400) setErrors(error.response.data);
@@ -75,6 +83,7 @@ const JoinRoom = ({ visible, onHide }) => {
           <InputText
             id='room'
             placeholder='Room ID'
+            disabled={router.query.roomId}
             value={roomId}
             onChange={(e) => setRoomId(e.target.value)}
             className={errors.room ? 'p-invalid' : ''}
